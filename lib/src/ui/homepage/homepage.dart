@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF3EB16F),
+        backgroundColor: Colors.purple,
         elevation: 0.0,
       ),
       body: Container(
@@ -36,16 +36,14 @@ class _HomePageState extends State<HomePage> {
             ),
             Flexible(
               flex: 7,
-              //child: Provider<GlobalBloc>.value(
               child: BottomContainer(),
             ),
-            //),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         elevation: 4,
-        backgroundColor: Color(0xFF3EB16F),
+        backgroundColor: Colors.purple,
         child: Icon(
           Icons.add,
         ),
@@ -79,7 +77,7 @@ class TopContainer extends StatelessWidget {
             offset: Offset(0, 3.5),
           )
         ],
-        color: Color(0xFF3EB16F),
+        color: Colors.purple,
       ),
       width: double.infinity,
       child: Column(
@@ -98,7 +96,7 @@ class TopContainer extends StatelessWidget {
             ),
           ),
           Divider(
-            color: Color(0xFF3EB16F),
+            color: Colors.purple,
           ),
           Padding(
             padding: EdgeInsets.only(top: 0.0),
@@ -122,14 +120,14 @@ class BottomContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFFF6F8FC),
+      color: Colors.purple,
       child: Center(
         child: Text(
           "Press + to add a medicine reminder",
           textAlign: TextAlign.center,
           style: TextStyle(
               fontSize: 24,
-              color: Color(0xFFC9C9C9),
+              color: Colors.purple,
               fontWeight: FontWeight.bold),
         ),
       ),
