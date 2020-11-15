@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:medicine_reminder/src/ui/homepage/homepage.dart';
@@ -16,10 +18,8 @@ class _SuccessScreenState extends State<SuccessScreen> {
     Timer(
       Duration(milliseconds: 2200),
       () {
-        Navigator.popUntil(
-          context,
-          ModalRoute.withName('/'),
-        );
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
       },
     );
   }
