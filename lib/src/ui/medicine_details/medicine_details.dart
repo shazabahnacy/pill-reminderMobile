@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:medicine_reminder/src/models/medicine.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +20,7 @@ class MedicineDetails extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(
-          color: Color(0xFF3EB16F),
+          color: Colors.purple,
         ),
         centerTitle: true,
         title: Text(
@@ -52,7 +53,7 @@ class MedicineDetails extends StatelessWidget {
                   width: 280,
                   height: 70,
                   child: FlatButton(
-                    color: Color(0xFF3EB16F),
+                    color: Colors.purple,
                     shape: StadiumBorder(),
                     onPressed: () {
                       openAlertBox(context);
@@ -128,7 +129,7 @@ class MainSection extends StatelessWidget {
         tag: medicine.medicineName + medicine.medicineType,
         child: Icon(
           IconData(0xe900, fontFamily: "Ic"),
-          color: Color(0xFF3EB16F),
+          color: Colors.purple,
           size: size,
         ),
       );
@@ -137,7 +138,7 @@ class MainSection extends StatelessWidget {
         tag: medicine.medicineName + medicine.medicineType,
         child: Icon(
           IconData(0xe901, fontFamily: "Ic"),
-          color: Color(0xFF3EB16F),
+          color: Colors.purple,
           size: size,
         ),
       );
@@ -146,7 +147,7 @@ class MainSection extends StatelessWidget {
         tag: medicine.medicineName + medicine.medicineType,
         child: Icon(
           IconData(0xe902, fontFamily: "Ic"),
-          color: Color(0xFF3EB16F),
+          color: Colors.purple,
           size: size,
         ),
       );
@@ -155,7 +156,7 @@ class MainSection extends StatelessWidget {
         tag: medicine.medicineName + medicine.medicineType,
         child: Icon(
           IconData(0xe903, fontFamily: "Ic"),
-          color: Color(0xFF3EB16F),
+          color: Colors.purple,
           size: size,
         ),
       );
@@ -164,7 +165,7 @@ class MainSection extends StatelessWidget {
       tag: medicine.medicineName + medicine.medicineType,
       child: Icon(
         Icons.local_hospital,
-        color: Color(0xFF3EB16F),
+        color: Colors.purple,
         size: size,
       ),
     );
@@ -232,7 +233,7 @@ class MainInfoTab extends StatelessWidget {
             fieldInfo,
             style: TextStyle(
                 fontSize: 24,
-                color: Color(0xFF3EB16F),
+                color: Colors.purple,
                 fontWeight: FontWeight.bold),
           ),
         ],
@@ -318,3 +319,4 @@ class ExtendedInfoTab extends StatelessWidget {
     );
   }
 }
+
