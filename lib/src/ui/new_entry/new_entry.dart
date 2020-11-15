@@ -10,6 +10,8 @@ import 'package:medicine_reminder/src/ui/homepage/homepage.dart';
 import 'package:medicine_reminder/src/ui/success_screen/success_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:medicine_reminder/src/ui/medicine_details/medicine_details.dart';
+import 'package:medicine_reminder/src/models/medicine.dart';
 
 class NewEntry extends StatefulWidget {
   @override
@@ -47,7 +49,7 @@ class _NewEntryState extends State<NewEntry> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(
-          color: Color(0xFF3EB16F),
+          color: Colors.purple,
         ),
         centerTitle: true,
         title: Text(
@@ -166,7 +168,7 @@ class _NewEntryState extends State<NewEntry> {
                 width: 220,
                 height: 70,
                 child: FlatButton(
-                    color: Color(0xFF3EB16F),
+                    color: Colors.purple,
                     shape: StadiumBorder(),
                     child: Center(
                       child: Text(
@@ -179,6 +181,10 @@ class _NewEntryState extends State<NewEntry> {
                       ),
                     ),
                     onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SuccessScreen()));
                       String medicineName;
                       int dosage;
                       //--------------------Error Checking------------------------
@@ -268,7 +274,7 @@ class _IntervalSelectionState extends State<IntervalSelection> {
               ),
             ),
             DropdownButton<int>(
-              iconEnabledColor: Color(0xFF3EB16F),
+              iconEnabledColor: Colors.purple,
               hint: _selected == 0
                   ? Text(
                       "Select an Interval",
@@ -344,7 +350,7 @@ class _SelectTimeState extends State<SelectTime> {
       child: Padding(
         padding: EdgeInsets.only(top: 10.0, bottom: 4),
         child: FlatButton(
-          color: Color(0xFF3EB16F),
+          color: Colors.purple,
           shape: StadiumBorder(),
           onPressed: () {
             _selectTime(context);
@@ -391,7 +397,7 @@ class MedicineTypeColumn extends StatelessWidget {
             width: 85,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: isSelected ? Color(0xFF3EB16F) : Colors.white,
+              color: isSelected ? Colors.purple : Colors.white,
             ),
             child: Center(
               child: Padding(
@@ -399,7 +405,7 @@ class MedicineTypeColumn extends StatelessWidget {
                 child: Icon(
                   IconData(iconValue, fontFamily: "Ic"),
                   size: 75,
-                  color: isSelected ? Colors.white : Color(0xFF3EB16F),
+                  color: isSelected ? Colors.white : Colors.purple,
                 ),
               ),
             ),
@@ -410,7 +416,7 @@ class MedicineTypeColumn extends StatelessWidget {
               width: 80,
               height: 30,
               decoration: BoxDecoration(
-                color: isSelected ? Color(0xFF3EB16F) : Colors.transparent,
+                color: isSelected ? Colors.purple : Colors.transparent,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Center(
@@ -418,7 +424,7 @@ class MedicineTypeColumn extends StatelessWidget {
                   name,
                   style: TextStyle(
                     fontSize: 16,
-                    color: isSelected ? Colors.white : Color(0xFF3EB16F),
+                    color: isSelected ? Colors.white : Colors.purple,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -453,8 +459,11 @@ class PanelTitle extends StatelessWidget {
           ),
           TextSpan(
             text: isRequired ? " *" : "",
-            style: TextStyle(fontSize: 14, color: Color(0xFF3EB16F)),
-          ),
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.purple,
+            ),
+          )
         ]),
       ),
     );
