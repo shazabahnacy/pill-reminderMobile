@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:medicine_reminder/src/models/medicine.dart';
 import 'package:medicine_reminder/src/ui/medicine_details/medicine_details.dart';
 import 'package:medicine_reminder/src/ui/new_entry/new_entry.dart';
+import 'package:medicine_reminder/src/ui/user/addMedicalRecord.dart';
+import 'package:medicine_reminder/src/ui/user/userprofile.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -22,6 +24,64 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Colors.purple,
         elevation: 0.0,
+      ),
+      drawer: Drawer(
+        // Add a ListView to the drawer. This ensures the user can scroll
+        // through the options in the drawer if there isn't enough vertical
+        // space to fit everything.
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('APP MENU'),
+              decoration: BoxDecoration(
+                color: Colors.purple,
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.supervised_user_circle_rounded),
+              title: Text('view user Profile'),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UserProf(),
+                    ));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.access_alarm_rounded),
+              title: Text('add medicine reminder'),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NewEntry(),
+                    ));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.medical_services_outlined),
+              title: Text('add medical record'),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Addmedrecord(),
+                    ));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('LogOut'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+          ],
+        ),
       ),
       body: Container(
         color: Color(0xFFF6F8FC),
@@ -63,7 +123,6 @@ class _HomePageState extends State<HomePage> {
 class TopContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // final GlobalBloc globalBloc = Provider.of<GlobalBloc>(context);
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -120,17 +179,17 @@ class BottomContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.purple,
-      child: Center(
-        child: Text(
-          "Press + to add a medicine reminder",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 24,
-              color: Colors.purple,
-              fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
+        color: Color(0xFFF6F8FC),
+        child: Center(
+          child: Text(
+            "Press + to add a medicine reminder",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 24,
+                color: Color(0xFFC9C9C9),
+                fontWeight: FontWeight.bold),
+          ),
+        ));
   }
 }
+
