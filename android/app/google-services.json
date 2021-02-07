@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "968631696397",
+    "firebase_url": "https://pill-reminder-1-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "pill-reminder-1",
+    "storage_bucket": "pill-reminder-1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:968631696397:android:491d19ccf02e6b5715a944",
+        "android_client_info": {
+          "package_name": "com.shizobizo.medicine_reminder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "968631696397-utdg2hhncen953fou8hcansakpe51flr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBs4OgEeGvgJ3SdUKXdL3YC-TQ1zL9DF8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "968631696397-utdg2hhncen953fou8hcansakpe51flr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

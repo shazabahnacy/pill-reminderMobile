@@ -1,4 +1,29 @@
-class Medicine {
+import 'package:flutter/foundation.dart';
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:medicine_reminder/src/screens/new_entry/new_entry.dart';
+
+import 'package:flutter/foundation.dart';
+
+class Medicines with ChangeNotifier {
+  final String id;
+  final String medicineName;
+  final int dosage;
+  final String medicineType;
+  final int interval;
+  final String startTime;
+
+  Medicines({
+    @required this.id,
+    @required this.medicineName,
+    @required this.dosage,
+    @required this.medicineType,
+    @required this.interval,
+    @required this.startTime,
+  });
+}
+/* class Medicine {
   final List<dynamic> notificationIDs;
   final String medicineName;
   final int dosage;
@@ -42,5 +67,4 @@ class Medicine {
       interval: parsedJson['interval'],
       startTime: parsedJson['start'],
     );
-  }
-}
+  }*/
