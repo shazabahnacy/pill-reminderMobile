@@ -2,16 +2,16 @@ import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:medicine_reminder/src/screens/new_entry/new_entry.dart';
+import 'package:medicine_reminder/src/screens/new_entry/addpillreminder.dart';
 
 import 'package:flutter/foundation.dart';
 
 class Medicines with ChangeNotifier {
   final String id;
   final String medicineName;
-  final int dosage;
+  final String dosage;
   final String medicineType;
-  final int interval;
+  final String interval;
   final String startTime;
 
   Medicines({

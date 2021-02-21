@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 //import 'package:medicine_reminder/src/ui/index/index.dart';
 import 'package:medicine_reminder/src/models/medicine.dart';
 import 'package:medicine_reminder/src/screens/medicine_details/medicine_details.dart';
-import 'package:medicine_reminder/src/screens/new_entry/new_entry.dart';
+import 'package:medicine_reminder/src/screens/new_entry/addpillreminder.dart';
 import 'package:medicine_reminder/src/screens/user/addMedicalRecord.dart';
 import 'package:medicine_reminder/src/screens/user/userprofile.dart';
 import 'package:provider/provider.dart';
@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => NewEntry(),
+                      builder: (context) => Addpillrem(),
                     ));
               },
             ),
@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => NewEntry(),
+              builder: (context) => Addpillrem(),
             ),
           );
         },
