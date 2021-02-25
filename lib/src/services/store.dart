@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:medicine_reminder/constants.dart';
 import 'package:medicine_reminder/src/models/medicalInfo.dart';
@@ -14,5 +16,17 @@ class Store {
       'intervals': medicines.interval,
       'time': medicines.startTime
     });
+  }
+
+  Stream<QuerySnapshot> loadReminder() {
+    return _firestore.collection('Reminder').snapshots();
+  }
+
+  deleteProduct(documentId) {
+    _firestore.collection('Reminder').document(documentId).delete();
+  }
+
+  editProduct(data, documentId) {
+    _firestore.collection('Reminder').document(documentId).updateData(data);
   }
 }

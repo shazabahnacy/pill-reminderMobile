@@ -6,16 +6,16 @@ import 'package:medicine_reminder/src/screens/new_entry/addpillreminder.dart';
 
 import 'package:flutter/foundation.dart';
 
-class Medicines with ChangeNotifier {
-  final String id;
-  final String medicineName;
-  final String dosage;
-  final String medicineType;
-  final String interval;
-  final String startTime;
+class Medicines {
+  String rId;
+  String medicineName;
+  String dosage;
+  String medicineType;
+  String interval;
+  String startTime;
 
   Medicines({
-    @required this.id,
+    @required this.rId,
     @required this.medicineName,
     @required this.dosage,
     @required this.medicineType,

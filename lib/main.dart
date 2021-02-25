@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:medicine_reminder/src/screens/homepage/homepage.dart';
+import 'package:medicine_reminder/src/screens/new_entry/editReminder.dart';
 //import 'package:medicine_reminder/src/ui/index/index.dart';
 import 'package:medicine_reminder/src/screens/register/register.dart';
 import 'package:medicine_reminder/src/screens/register/adminlogin.dart';
@@ -27,7 +28,8 @@ class _MedicineReminderState extends State<MedicineReminder> {
         brightness: Brightness.light,
       ),
       routes: <String, WidgetBuilder>{
-        '/signup': (BuildContext context) => new SignupPage()
+        '/signup': (BuildContext context) => new SignupPage(),
+        '/Editreminder': (BuildContext context) => new Editreminder()
       },
       home: new MyHomePage(),
       debugShowCheckedModeBanner: false,

@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
-
+import 'package:medicine_reminder/src/models/medicine.dart';
+import 'package:medicine_reminder/src/provider/editpage.dart';
 //import 'package:medicine_reminder/src/ui/index/index.dart';
+import 'package:medicine_reminder/src/widgets/popupmenu.dart';
 import 'package:medicine_reminder/src/models/medicine.dart';
 import 'package:medicine_reminder/src/screens/medicine_details/medicine_details.dart';
 import 'package:medicine_reminder/src/screens/new_entry/addpillreminder.dart';
 import 'package:medicine_reminder/src/screens/user/addMedicalRecord.dart';
 import 'package:medicine_reminder/src/screens/user/userprofile.dart';
 import 'package:provider/provider.dart';
+import 'package:medicine_reminder/src/services/store.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:medicine_reminder/src/models/medicine_type.dart';
+import 'package:medicine_reminder/src/screens/new_entry/editReminder.dart';
+import 'package:medicine_reminder/main.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -176,19 +183,261 @@ class TopContainer extends StatelessWidget {
 }
 
 class BottomContainer extends StatelessWidget {
+  final _store = Store();
   @override
   Widget build(BuildContext context) {
-    return Container(
-        color: Color(0xFFF6F8FC),
-        child: Center(
-          child: Text(
-            "Press + to add a medicine reminder",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 24,
-                color: Color(0xFFC9C9C9),
-                fontWeight: FontWeight.bold),
+    return new Scaffold(
+        body: StreamBuilder<QuerySnapshot>(
+            stream: _store.loadReminder(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<Medicines> medicines = [];
+                for (var doc in snapshot.data.documents) {
+                  var data = doc.data;
+                  medicines.add(Medicines(
+                      rId: doc.documentID,
+                      medicineName: data['medname'],
+                      dosage: data['dosage'],
+                      medicineType: data['medtype'],
+                      interval: data['intervals'],
+                      startTime: data['time']));
+                }
+                return GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: .8,
+                  ),
+                  itemBuilder: (context, index) => Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    child: GestureDetector(
+                      onTapUp: (details) async {
+                        double dx = details.globalPosition.dx;
+                        double dy = details.globalPosition.dy;
+                        double dx2 = MediaQuery.of(context).size.width - dx;
+                        double dy2 = MediaQuery.of(context).size.width - dy;
+                        await showMenu(
+                            context: context,
+                            position: RelativeRect.fromLTRB(dx, dy, dx2, dy2),
+                            items: [
+                              MyPopupMenuItem(
+                                onClick: () {
+                                  // Navigator.pushNamed(context, '/Editreminder',
+                                  // arguments: medicines[index]);
+                                  //                      Provider.of<CartItem>(context, listen: false)
+                                  // .editreminder(medicines);
+                                  Navigator.pushNamed(context, '/Editreminder',
+                                      arguments: medicines[index]);
+                                },
+                                child: Text('Edit'),
+                              ),
+                              MyPopupMenuItem(
+                                onClick: () {
+                                  _store.deleteProduct(medicines[index].rId);
+                                  Navigator.pop(context);
+                                },
+                                child: Text('Delete'),
+                              ),
+                            ]);
+                        return MedicineCard(medicines[index]);
+                      },
+                      child: Stack(
+                        children: <Widget>[
+                          Positioned.fill(
+                            child: Image(
+                                fit: BoxFit.scaleDown,
+                                image:
+                                    AssetImage('assets/images/bottle 1.png')),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            child: Opacity(
+                              opacity: .6,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 60,
+                                color: Colors.white,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        medicines[index].medicineName,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(medicines[index].medicineType)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  itemCount: medicines.length,
+                );
+              } else {
+                return Center(
+                    child: Text(
+                  "Press + to add a medicine reminder",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 24,
+                      color: Color(0xFFC9C9C9),
+                      fontWeight: FontWeight.bold),
+                ));
+              }
+            }));
+  }
+}
+// Widget build(BuildContext context) {
+//   return new Scaffold(
+//       body: StreamBuilder<QuerySnapshot>(
+//     stream: _store.loadReminder(),
+//     builder: (context, snapshot) {
+//       if (snapshot.hasData) {
+//         for (var doc in snapshot.data.documents) {
+//           var data = doc.data;
+//           return Container();
+//         }
+//       } else if (snapshot.data.documents == 0) {
+//         return Container(
+//           color: Color(0xFFF6F8FC),
+//           child: Center(
+//             child: Text(
+//               "Press + to add a Mediminder",
+//               textAlign: TextAlign.center,
+//               style: TextStyle(
+//                   fontSize: 24,
+//                   color: Color(0xFFC9C9C9),
+//                   fontWeight: FontWeight.bold),
+//             ),
+//           ),
+//         );
+//       } else {
+//         return Container(
+//           color: Color(0xFFF6F8FC),
+//           child: GridView.builder(
+//             padding: EdgeInsets.only(top: 12),
+
+//             gridDelegate:
+//                 SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+//             itemCount: snapshot.data.length,
+
+//             itemBuilder: (context, index) {
+//               List<Medicines> medicines = [];
+//               return MedicineCard(medicines[index]);
+//             },
+//           ),
+//         );
+//       }
+//     },
+//   ));
+// }
+
+class MedicineCard extends StatelessWidget {
+  final Medicines medicine;
+
+  MedicineCard(this.medicine);
+
+  Hero makeIcon(double size) {
+    if (medicine.medicineType == "Bottle") {
+      return Hero(
+        tag: medicine.medicineName + medicine.medicineType,
+        child: Image(image: AssetImage('assets/images/bottle 1.png')),
+      );
+    } else if (medicine.medicineType == "Pill") {
+      return Hero(
+        tag: medicine.medicineName + medicine.medicineType,
+        child: Image(image: AssetImage('assets/images/pill photo.png')),
+      );
+    } else if (medicine.medicineType == "Syringe") {
+      return Hero(
+        tag: medicine.medicineName + medicine.medicineType,
+        child: Image(image: AssetImage('assets/images/syringe.jpg')),
+      );
+    } else if (medicine.medicineType == "Tablet") {
+      return Hero(
+        tag: medicine.medicineName + medicine.medicineType,
+        child: Image(image: AssetImage('assets/images/tablets.png')),
+      );
+    }
+    return Hero(
+      tag: medicine.medicineName + medicine.medicineType,
+      child: Icon(
+        Icons.error,
+        color: Color(0xFF3EB16F),
+        size: size,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(10.0),
+      child: InkWell(
+        highlightColor: Colors.white,
+        splashColor: Colors.grey,
+        onTap: () {
+          Navigator.of(context).push(
+            PageRouteBuilder<Null>(
+              pageBuilder: (BuildContext context, Animation<double> animation,
+                  Animation<double> secondaryAnimation) {
+                return AnimatedBuilder(
+                    animation: animation,
+                    builder: (BuildContext context, Widget child) {
+                      return Opacity(
+                        opacity: animation.value,
+                      );
+                    });
+              },
+              transitionDuration: Duration(milliseconds: 500),
+            ),
+          );
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
           ),
-        ));
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                makeIcon(50.0),
+                Hero(
+                  tag: medicine.medicineName,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Text(
+                      medicine.medicineName,
+                      style: TextStyle(
+                          fontSize: 22,
+                          color: Color(0xFF3EB16F),
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ),
+                Text(
+                  medicine.interval == 1
+                      ? "Every " + medicine.interval.toString() + " hour"
+                      : "Every " + medicine.interval.toString() + " hours",
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xFFC9C9C9),
+                      fontWeight: FontWeight.w400),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
