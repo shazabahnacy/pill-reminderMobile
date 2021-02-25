@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:medicine_reminder/src/screens/homepage/homepage.dart';
+import 'package:medicine_reminder/src/models/medicalinfo.dart';
+import 'package:medicine_reminder/src/services/store.dart';
+import 'package:medicine_reminder/src/services/auth.dart';
 
 class Addmedrecord extends StatefulWidget {
   @override
@@ -7,7 +10,15 @@ class Addmedrecord extends StatefulWidget {
 }
 
 class _AddmedrecordState extends State<Addmedrecord> {
+  final _auth = Auth();
+  final _store = Store();
   final _formKey = GlobalKey<FormState>();
+  String bsugar = '';
+  String bpressure = '';
+  String hweight = '';
+  String hheight = '';
+  String heartRate = '';
+  String respiratoryRate = '';
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +55,11 @@ class _AddmedrecordState extends State<Addmedrecord> {
                             }
                             return null;
                           },
+                          onChanged: (value) {
+                            setState(() {
+                              bsugar = value;
+                            });
+                          },
                           decoration: InputDecoration(
                               labelText: 'Blood sugar rate',
                               labelStyle: TextStyle(
@@ -61,6 +77,11 @@ class _AddmedrecordState extends State<Addmedrecord> {
                               return "Please enter blood pressure here";
                             }
                             return null;
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              bpressure = value;
+                            });
                           },
                           decoration: InputDecoration(
                               labelText: 'Blood pressure ',
@@ -81,6 +102,11 @@ class _AddmedrecordState extends State<Addmedrecord> {
                             }
                             return null;
                           },
+                          onChanged: (value) {
+                            setState(() {
+                              hweight = value;
+                            });
+                          },
                           decoration: InputDecoration(
                               labelText: 'Weight ',
                               labelStyle: TextStyle(
@@ -98,6 +124,11 @@ class _AddmedrecordState extends State<Addmedrecord> {
                               return "Please enter your height here";
                             }
                             return null;
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              hheight = value;
+                            });
                           },
                           decoration: InputDecoration(
                               labelText: 'height ',
@@ -117,6 +148,11 @@ class _AddmedrecordState extends State<Addmedrecord> {
                             }
                             return null;
                           },
+                          onChanged: (value) {
+                            setState(() {
+                              heartRate = value;
+                            });
+                          },
                           decoration: InputDecoration(
                               labelText: 'Heart Rate ',
                               labelStyle: TextStyle(
@@ -134,6 +170,11 @@ class _AddmedrecordState extends State<Addmedrecord> {
                               return "Please enter your respiratory rate here";
                             }
                             return null;
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              respiratoryRate = value;
+                            });
                           },
                           decoration: InputDecoration(
                               labelText: 'Respiratory Rate ',
@@ -156,10 +197,19 @@ class _AddmedrecordState extends State<Addmedrecord> {
                               child: GestureDetector(
                                 onTap: () {
                                   if (_formKey.currentState.validate()) {
+                                    _store.Addmedrecord(MedicalInfo(
+                                        bloodsugar: bsugar,
+                                        bloodpressure: bpressure,
+                                        weight: hweight,
+                                        height: hheight,
+                                        heartrate: heartRate,
+                                        respiratoryrate: respiratoryRate));
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => HomePage()));
+                                  } else {
+                                    print('Error');
                                   }
                                 },
                                 child: Center(
