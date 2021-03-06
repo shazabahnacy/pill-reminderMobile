@@ -25,6 +25,12 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+  TextEditingController medinamecontroller = TextEditingController();
+
+  TextEditingController medtypeController = TextEditingController();
+  TextEditingController intervalController = TextEditingController();
+  TextEditingController timeController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -182,6 +188,7 @@ class TopContainer extends StatelessWidget {
   }
 }
 
+@override
 class BottomContainer extends StatelessWidget {
   final _store = Store();
   @override
@@ -196,91 +203,46 @@ class BottomContainer extends StatelessWidget {
                   var data = doc.data;
                   medicines.add(Medicines(
                       rId: doc.documentID,
-                      medicineName: data['medname'],
+                      medicineName: data['MedicineName'],
                       dosage: data['dosage'],
-                      medicineType: data['medtype'],
-                      interval: data['intervals'],
-                      startTime: data['time']));
+                      medicineType: data['medicineType'],
+                      interval: data['interval'],
+                      startTime: data['StartTime']));
                 }
-                return GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: .8,
-                  ),
-                  itemBuilder: (context, index) => Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    child: GestureDetector(
-                      onTapUp: (details) async {
-                        double dx = details.globalPosition.dx;
-                        double dy = details.globalPosition.dy;
-                        double dx2 = MediaQuery.of(context).size.width - dx;
-                        double dy2 = MediaQuery.of(context).size.width - dy;
-                        await showMenu(
-                            context: context,
-                            position: RelativeRect.fromLTRB(dx, dy, dx2, dy2),
-                            items: [
-                              MyPopupMenuItem(
-                                onClick: () {
-                                  // Navigator.pushNamed(context, '/Editreminder',
-                                  // arguments: medicines[index]);
-                                  //                      Provider.of<CartItem>(context, listen: false)
-                                  // .editreminder(medicines);
-                                  Navigator.pushNamed(context, '/Editreminder',
-                                      arguments: medicines[index]);
-                                },
-                                child: Text('Edit'),
-                              ),
-                              MyPopupMenuItem(
-                                onClick: () {
-                                  _store.deleteProduct(medicines[index].rId);
-                                  Navigator.pop(context);
-                                },
-                                child: Text('Delete'),
-                              ),
-                            ]);
-                        return MedicineCard(medicines[index]);
-                      },
-                      child: Stack(
-                        children: <Widget>[
-                          Positioned.fill(
-                            child: Image(
-                                fit: BoxFit.scaleDown,
-                                image:
-                                    AssetImage('assets/images/bottle 1.png')),
+                return ListView.builder(
+                    itemBuilder: (context, index) => Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        child: ListTile(
+                          leading: Icon(Icons.alarm_on_outlined),
+                          title: Text(medicines[index].medicineName),
+                          subtitle: Column(
+                            children: <Widget>[
+                              Text(medicines[index].medicineType),
+                              Text(medicines[index].startTime),
+                            ],
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                           ),
-                          Positioned(
-                            bottom: 0,
-                            child: Opacity(
-                              opacity: .6,
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: 60,
-                                color: Colors.white,
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        medicines[index].medicineName,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(medicines[index].medicineType)
-                                    ],
-                                  ),
-                                ),
-                              ),
+                          trailing: Wrap(children: <Widget>[
+                            IconButton(
+                              icon: Icon(Icons.edit),
+                              color: Colors.purple,
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/Editreminder',
+                                    arguments: medicines[index]);
+                              },
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  itemCount: medicines.length,
-                );
+                            IconButton(
+                              icon: Icon(Icons.delete_sharp),
+                              color: Colors.red,
+                              onPressed: () {
+                                _store.deleteProduct(medicines[index].rId);
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ]),
+                        )),
+                    itemCount: medicines.length);
               } else {
                 return Center(
                     child: Text(
@@ -441,3 +403,83 @@ class MedicineCard extends StatelessWidget {
     );
   }
 }
+// return GridView.builder(
+//   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+//     crossAxisCount: 2,
+//     childAspectRatio: .8,
+//   ),
+//   itemBuilder: (context, index) => Padding(
+//     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+//     child: GestureDetector(
+//       onTapUp: (details) async {
+//         double dx = details.globalPosition.dx;
+//         double dy = details.globalPosition.dy;
+//         double dx2 = MediaQuery.of(context).size.width - dx;
+//         double dy2 = MediaQuery.of(context).size.width - dy;
+//         await showMenu(
+//             context: context,
+//             position: RelativeRect.fromLTRB(dx, dy, dx2, dy2),
+//             items: [
+//               MyPopupMenuItem(
+//                 onClick: () {
+//                   // Navigator.pushNamed(context, '/Editreminder',
+//                   // arguments: medicines[index]);
+//                   //                      Provider.of<CartItem>(context, listen: false)
+//                   // .editreminder(medicines);
+
+//                   Navigator.pushNamed(context, '/Editreminder',
+//                       arguments: medicines[index]);
+//                 },
+//                 child: Text('Edit'),
+//               ),
+//               MyPopupMenuItem(
+//                 onClick: () {
+//                   _store.deleteProduct(medicines[index].rId);
+//                   Navigator.pop(context);
+//                 },
+//                 child: Text('Delete'),
+//               ),
+//             ]);
+//         // return MedicineCard(medicines[index]);
+//       },
+//       child: Stack(
+//         children: <Widget>[
+//           Positioned.fill(
+//             child: Image(
+//                 fit: BoxFit.scaleDown,
+//                 image:
+//                     AssetImage('assets/images/bottle 1.png')),
+//           ),
+//           Positioned(
+//             bottom: 0,
+//             child: Opacity(
+//               opacity: .6,
+//               child: Container(
+//                 width: MediaQuery.of(context).size.width,
+//                 height: 60,
+//                 color: Colors.white,
+//                 child: Padding(
+//                   padding: EdgeInsets.symmetric(
+//                       horizontal: 10, vertical: 5),
+//                   child: Column(
+//                     crossAxisAlignment:
+//                         CrossAxisAlignment.start,
+//                     children: <Widget>[
+//                       Text(
+//                         medicines[index].medicineName,
+//                         style: TextStyle(
+//                             fontWeight: FontWeight.bold),
+//                       ),
+//                       Text(medicines[index].medicineType)
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             ),
+//           )
+//         ],
+//       ),
+//     ),
+//   ),
+//   itemCount: medicines.length,
+// );

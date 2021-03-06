@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:medicine_reminder/src/screens/homepage/homepage.dart';
 import 'package:medicine_reminder/src/models/medicalinfo.dart';
 import 'package:medicine_reminder/src/services/store.dart';
-import 'package:medicine_reminder/src/services/auth.dart';
+//import 'package:medicine_reminder/src/services/auth.dart';
 
 class Addmedrecord extends StatefulWidget {
   @override
@@ -10,7 +10,7 @@ class Addmedrecord extends StatefulWidget {
 }
 
 class _AddmedrecordState extends State<Addmedrecord> {
-  final _auth = Auth();
+  //final _auth = Auth();
   final _store = Store();
   final _formKey = GlobalKey<FormState>();
   String bsugar = '';
@@ -197,7 +197,7 @@ class _AddmedrecordState extends State<Addmedrecord> {
                               child: GestureDetector(
                                 onTap: () {
                                   if (_formKey.currentState.validate()) {
-                                    _store.Addmedrecord(MedicalInfo(
+                                    _store.addmedrecord(MedicalInfo(
                                         bloodsugar: bsugar,
                                         bloodpressure: bpressure,
                                         weight: hweight,
