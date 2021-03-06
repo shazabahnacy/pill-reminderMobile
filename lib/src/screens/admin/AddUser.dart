@@ -13,7 +13,7 @@ class _AddUserState extends State<AddUser> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        resizeToAvoidBottomPadding: false,
+        //resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(
