@@ -23,7 +23,7 @@ class _AddmedrecordState extends State<Addmedrecord> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        resizeToAvoidBottomPadding: false,
+        //resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(

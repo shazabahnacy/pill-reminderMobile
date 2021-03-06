@@ -75,7 +75,7 @@ class _EditreminderState extends State<Editreminder> {
     final timeController = TextEditingController(text: medicines.startTime);
     //Medicines medicines = widget.medicines;
     return new Scaffold(
-        resizeToAvoidBottomPadding: false,
+        //resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(

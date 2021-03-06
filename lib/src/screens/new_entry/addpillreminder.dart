@@ -56,7 +56,7 @@ class _AddpillremState extends State<Addpillrem> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        resizeToAvoidBottomPadding: false,
+        //resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(
