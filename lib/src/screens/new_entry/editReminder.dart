@@ -113,20 +113,23 @@ class _EditreminderState extends State<Editreminder> {
                               ),
                             ]),
                         TextFormField(
-                          controller: medicineNameController,
-                          // validator: (value) {
-                          // if (value.isEmpty) {
-                          // return ('please enter new dosage');
-                          //} else {
-                          //   return null;
-                          // }
-                          // },
-                          onChanged: (val) {
-                            medicineNameController.text = val;
-
-                            // medicineName = medicineNameController.text;
-                            // medicineNameController.text = medicineName;
+                          //controller: medicineNameController,
+                          initialValue: medicines.medicineName,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return ('please enter new dosage');
+                            } else {
+                              return null;
+                            }
                           },
+                          onChanged: (val) {
+                            setState(() {
+                              medicines.medicineName = val;
+                            });
+                          },
+                          // medicineName = medicineNameController.text;
+                          // medicineNameController.text = medicineName;
+                          //   },
                           // controller: medinamecontroller,
                           decoration: InputDecoration(
                               labelText: 'Medicine Name',
@@ -155,7 +158,7 @@ class _EditreminderState extends State<Editreminder> {
                             ]),
                         SizedBox(height: 10.0),
                         TextFormField(
-                          controller: dosageController,
+                          //controller: dosageController,
                           // validator: (value) {
                           //   if (value.isEmpty) {
                           //     return ('please enter new dosage');
@@ -163,11 +166,25 @@ class _EditreminderState extends State<Editreminder> {
                           //     return null;
                           //   }
                           // },
-                          onChanged: (val) {
-                            // dosage = val;
-                            // dosage = dosageController.text;
-                            dosageController.text = val;
+                          initialValue: medicines.dosage,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return ('please enter new dosage');
+                            } else {
+                              return null;
+                            }
                           },
+
+                          onChanged: (val) {
+                            setState(() {
+                              medicines.dosage = val;
+                            });
+                          },
+                          // onChanged: (val) {
+                          // dosage = val;
+                          // dosage = dosageController.text;
+                          //dosageController.text = val;
+                          // },
                           //initialValue: medicines?.dosage,
                           //  controller: doseController,
                           decoration: InputDecoration(
@@ -245,7 +262,10 @@ class _EditreminderState extends State<Editreminder> {
                                 //   }
                                 // },
                                 onChanged: (value) {
-                                  intervalController.text = _selectedinterval;
+                                  setState(() {
+                                    _selectedinterval = value;
+                                    medicines.interval = value;
+                                  });
 
                                   // intervalController.text = interval;
                                 },
@@ -295,7 +315,8 @@ class _EditreminderState extends State<Editreminder> {
                         DateTimePicker(
                           type: DateTimePickerType.dateTimeSeparate,
                           dateMask: 'd MMM, yyyy',
-                          initialValue: DateTime.now().toString(),
+                          //initialValue: DateTime.now().toString(),
+                          initialValue: medicines.startTime,
                           //  controller: timeController,
                           firstDate: DateTime(2000),
                           lastDate: DateTime(2100),
@@ -312,7 +333,7 @@ class _EditreminderState extends State<Editreminder> {
                           },
                           onChanged: (val) {
                             setState(() {
-                              startTime = val;
+                              medicines.startTime = val;
                               // timeController.text = startTime;
                             });
                           },
@@ -336,12 +357,11 @@ class _EditreminderState extends State<Editreminder> {
                                     print(interval);
                                     print(startTime);
                                     _store.editProduct({
-                                      'MedicineName':
-                                          medicineNameController.text,
-                                      'dosage': dosageController.text,
-                                      'medicineType': medicineType,
-                                      'interval': intervalController.text,
-                                      'StartTime': startTime
+                                      'MedicineName': medicines.medicineName,
+                                      'dosage': medicines.dosage,
+                                      'medicineType': medicines.medicineType,
+                                      'interval': medicines.interval,
+                                      'StartTime': medicines.startTime
                                     }, medicines.rId);
                                   }
                                   Navigator.push(
