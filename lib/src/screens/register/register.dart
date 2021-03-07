@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medicine_reminder/src/screens/homepage/homepage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -8,6 +10,31 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
+
+  TextEditingController _namecontroller = TextEditingController();
+
+  TextEditingController _emailcontroller = TextEditingController();
+
+  TextEditingController _passwordcontroller = TextEditingController();
+
+  TextEditingController _numbercontroller = TextEditingController();
+  TextEditingController _agecontroller = TextEditingController();
+
+  @override
+  void dispose() {
+    _namecontroller.dispose();
+
+    _emailcontroller.dispose();
+
+    _passwordcontroller.dispose();
+
+    _numbercontroller.dispose();
+
+    _agecontroller.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -44,6 +71,7 @@ class _SignupPageState extends State<SignupPage> {
                 child: Column(
                   children: <Widget>[
                     TextFormField(
+                      controller: _emailcontroller,
                       validator: (value) {
                         if (value.isEmpty) {
                           return "Please enter email here";
@@ -64,6 +92,7 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     SizedBox(height: 10.0),
                     TextFormField(
+                      controller: _passwordcontroller,
                       validator: (value) {
                         if (value.isEmpty) {
                           return "Please enter password here";
@@ -82,6 +111,7 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     SizedBox(height: 10.0),
                     TextFormField(
+                      controller: _namecontroller,
                       validator: (value) {
                         if (value.isEmpty) {
                           return "Please enter your fullname here";
@@ -99,6 +129,7 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     SizedBox(height: 10.0),
                     TextFormField(
+                      controller: _agecontroller,
                       validator: (value) {
                         if (value.isEmpty) {
                           return "Please enter your age here";
@@ -140,8 +171,24 @@ class _SignupPageState extends State<SignupPage> {
                           color: Colors.purple,
                           elevation: 7.0,
                           child: GestureDetector(
-                            onTap: () {
+                            onTap: () async {
+                              print('hamda');
                               if (_formKey.currentState.validate()) {
+                                var result = await FirebaseAuth.instance
+                                    .createUserWithEmailAndPassword(
+                                        email: _emailcontroller.text,
+                                        password: _passwordcontroller.text);
+                                print(result);
+                                if (result != null) {
+                                  Firestore.instance
+                                      .collection('users')
+                                      .document(result.uid)
+                                      .setData({
+                                    'name': _namecontroller.text,
+                                    'age': _agecontroller.text,
+                                    'number': _numbercontroller.text
+                                  });
+                                }
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(

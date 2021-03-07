@@ -5,6 +5,7 @@ import io.flutter.plugins.firebase.cloudfirestore.CloudFirestorePlugin;
 import io.flutter.plugins.firebaseauth.FirebaseAuthPlugin;
 import io.flutter.plugins.firebase.core.FirebaseCorePlugin;
 import io.flutter.plugins.firebase.database.FirebaseDatabasePlugin;
+import io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin;
 import com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin;
 import io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin;
 
@@ -20,6 +21,7 @@ public final class GeneratedPluginRegistrant {
     FirebaseAuthPlugin.registerWith(registry.registrarFor("io.flutter.plugins.firebaseauth.FirebaseAuthPlugin"));
     FirebaseCorePlugin.registerWith(registry.registrarFor("io.flutter.plugins.firebase.core.FirebaseCorePlugin"));
     FirebaseDatabasePlugin.registerWith(registry.registrarFor("io.flutter.plugins.firebase.database.FirebaseDatabasePlugin"));
+    FirebaseMessagingPlugin.registerWith(registry.registrarFor("io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin"));
     FlutterLocalNotificationsPlugin.registerWith(registry.registrarFor("com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin"));
     SharedPreferencesPlugin.registerWith(registry.registrarFor("io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin"));
   }
