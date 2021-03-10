@@ -1,28 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:medicine_reminder/src/screens/homepage/homepage.dart';
 import 'package:medicine_reminder/src/models/medicalinfo.dart';
 import 'package:medicine_reminder/src/screens/user/viewmedicalrec.dart';
 import 'package:medicine_reminder/src/services/store.dart';
-import 'package:medicine_reminder/src/services/auth.dart';
 
-class Addmedrecord extends StatefulWidget {
+class Editmedicalrecord extends StatefulWidget {
   @override
-  _AddmedrecordState createState() => _AddmedrecordState();
+  _EditmedicalrecordState createState() => _EditmedicalrecordState();
 }
 
-class _AddmedrecordState extends State<Addmedrecord> {
-  final _auth = Auth();
+class _EditmedicalrecordState extends State<Editmedicalrecord> {
+  static String id = 'EditProduct';
+
+  String bloodsugar, bloodpressure, weight, height, heartrate, respiratoryrate;
   final _store = Store();
   final _formKey = GlobalKey<FormState>();
-  String bsugar = '';
-  String bpressure = '';
-  String hweight = '';
-  String hheight = '';
-  String heartRate = '';
-  String respiratoryRate = '';
+  String _typeSelected;
+  List<MedicalInfo> medicalinfo = [];
 
   @override
   Widget build(BuildContext context) {
+    MedicalInfo medicalinfo = ModalRoute.of(context).settings.arguments;
+    final bloodSugarController =
+        TextEditingController(text: medicalinfo.bloodsugar);
+    final bloodPressureController =
+        TextEditingController(text: medicalinfo.bloodpressure);
+    final weightController = TextEditingController(text: medicalinfo.weight);
+    final heightController = TextEditingController(text: medicalinfo.height);
+    final heartRateController =
+        TextEditingController(text: medicalinfo.heartrate);
+    final respiratoryRateController =
+        TextEditingController(text: medicalinfo.respiratoryrate);
+
     return new Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
@@ -32,7 +40,7 @@ class _AddmedrecordState extends State<Addmedrecord> {
           ),
           centerTitle: true,
           title: Text(
-            "Add your medical records",
+            "Edit the medical record",
             style: TextStyle(
               color: Colors.black,
               fontSize: 18,
@@ -51,20 +59,34 @@ class _AddmedrecordState extends State<Addmedrecord> {
                         key: _formKey,
                         child: Column(
                           children: <Widget>[
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Blood Sugar Level",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ]),
                             TextFormField(
+                              initialValue: medicalinfo.bloodsugar,
                               validator: (value) {
                                 if (value.isEmpty) {
-                                  return "Please enter bloodSugar rate here";
+                                  return ('please enter blood sugar');
+                                } else {
+                                  return null;
                                 }
-                                return null;
                               },
-                              onChanged: (value) {
+                              onChanged: (val) {
                                 setState(() {
-                                  bsugar = value;
+                                  medicalinfo.bloodsugar = val;
                                 });
                               },
                               decoration: InputDecoration(
-                                  labelText: 'Blood sugar rate',
+                                  labelText: 'bloodsugar',
                                   labelStyle: TextStyle(
                                       fontFamily: 'Montserrat',
                                       fontWeight: FontWeight.bold,
@@ -73,21 +95,38 @@ class _AddmedrecordState extends State<Addmedrecord> {
                                       borderSide:
                                           BorderSide(color: Colors.purple))),
                             ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Blood Pressure  ",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ]),
                             SizedBox(height: 10.0),
                             TextFormField(
+                              initialValue: medicalinfo.bloodpressure,
                               validator: (value) {
                                 if (value.isEmpty) {
-                                  return "Please enter blood pressure here";
+                                  return ('please enter new blood pressure');
+                                } else {
+                                  return null;
                                 }
-                                return null;
                               },
-                              onChanged: (value) {
+                              onChanged: (val) {
                                 setState(() {
-                                  bpressure = value;
+                                  medicalinfo.bloodpressure = val;
                                 });
                               },
                               decoration: InputDecoration(
-                                  labelText: 'Blood pressure ',
+                                  labelText: 'bloodpressure ',
                                   labelStyle: TextStyle(
                                       fontFamily: 'Montserrat',
                                       fontWeight: FontWeight.bold,
@@ -96,21 +135,38 @@ class _AddmedrecordState extends State<Addmedrecord> {
                                       borderSide:
                                           BorderSide(color: Colors.purple))),
                             ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Weight",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ]),
                             SizedBox(height: 10.0),
                             TextFormField(
+                              initialValue: medicalinfo.weight,
                               validator: (value) {
                                 if (value.isEmpty) {
-                                  return "Please enter your weight here";
+                                  return ('please enter new weight');
+                                } else {
+                                  return null;
                                 }
-                                return null;
                               },
-                              onChanged: (value) {
+                              onChanged: (val) {
                                 setState(() {
-                                  hweight = value;
+                                  medicalinfo.weight = val;
                                 });
                               },
                               decoration: InputDecoration(
-                                  labelText: 'Weight ',
+                                  labelText: 'weight ',
                                   labelStyle: TextStyle(
                                       fontFamily: 'Montserrat',
                                       fontWeight: FontWeight.bold,
@@ -119,17 +175,34 @@ class _AddmedrecordState extends State<Addmedrecord> {
                                       borderSide:
                                           BorderSide(color: Colors.purple))),
                             ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Height",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ]),
                             SizedBox(height: 10.0),
                             TextFormField(
+                              initialValue: medicalinfo.height,
                               validator: (value) {
                                 if (value.isEmpty) {
-                                  return "Please enter your height here";
+                                  return ('please enter new height');
+                                } else {
+                                  return null;
                                 }
-                                return null;
                               },
-                              onChanged: (value) {
+                              onChanged: (val) {
                                 setState(() {
-                                  hheight = value;
+                                  medicalinfo.height = val;
                                 });
                               },
                               decoration: InputDecoration(
@@ -142,21 +215,38 @@ class _AddmedrecordState extends State<Addmedrecord> {
                                       borderSide:
                                           BorderSide(color: Colors.purple))),
                             ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "HeartRate",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ]),
                             SizedBox(height: 10.0),
                             TextFormField(
+                              initialValue: medicalinfo.heartrate,
                               validator: (value) {
                                 if (value.isEmpty) {
-                                  return "Please enter your heart rate here";
+                                  return ('please enter new heart rate');
+                                } else {
+                                  return null;
                                 }
-                                return null;
                               },
-                              onChanged: (value) {
+                              onChanged: (val) {
                                 setState(() {
-                                  heartRate = value;
+                                  medicalinfo.heartrate = val;
                                 });
                               },
                               decoration: InputDecoration(
-                                  labelText: 'Heart Rate ',
+                                  labelText: 'heartrate ',
                                   labelStyle: TextStyle(
                                       fontFamily: 'Montserrat',
                                       fontWeight: FontWeight.bold,
@@ -165,21 +255,38 @@ class _AddmedrecordState extends State<Addmedrecord> {
                                       borderSide:
                                           BorderSide(color: Colors.purple))),
                             ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Respiratory Rate",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ]),
                             SizedBox(height: 10.0),
                             TextFormField(
+                              initialValue: medicalinfo.respiratoryrate,
                               validator: (value) {
                                 if (value.isEmpty) {
-                                  return "Please enter your respiratory rate here";
+                                  return ('please enter new respiratory rate');
+                                } else {
+                                  return null;
                                 }
-                                return null;
                               },
-                              onChanged: (value) {
+                              onChanged: (val) {
                                 setState(() {
-                                  respiratoryRate = value;
+                                  medicalinfo.respiratoryrate = val;
                                 });
                               },
                               decoration: InputDecoration(
-                                  labelText: 'Respiratory Rate ',
+                                  labelText: 'respiratoryrate ',
                                   labelStyle: TextStyle(
                                       fontFamily: 'Montserrat',
                                       fontWeight: FontWeight.bold,
@@ -187,6 +294,9 @@ class _AddmedrecordState extends State<Addmedrecord> {
                                   focusedBorder: UnderlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.purple))),
+                            ),
+                            SizedBox(
+                              height: 15,
                             ),
                             SizedBox(height: 50.0),
                             Container(
@@ -199,26 +309,34 @@ class _AddmedrecordState extends State<Addmedrecord> {
                                   child: GestureDetector(
                                     onTap: () {
                                       if (_formKey.currentState.validate()) {
-                                        _store.addmedrecord(MedicalInfo(
-                                          bloodsugar: bsugar,
-                                          bloodpressure: bpressure,
-                                          weight: hweight,
-                                          height: hheight,
-                                          heartrate: heartRate,
-                                          respiratoryrate: respiratoryRate,
-                                        ));
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ViewMedicalRecords()));
-                                      } else {
-                                        print('Error');
+                                        _formKey.currentState.save();
+
+                                        print(bloodsugar);
+                                        print(bloodpressure);
+                                        print(weight);
+                                        print(height);
+                                        print(heartrate);
+                                        print(respiratoryrate);
+                                        _store.editmedicalrec({
+                                          'bloodsugar': medicalinfo.bloodsugar,
+                                          'bloodpressure':
+                                              medicalinfo.bloodpressure,
+                                          'weight': medicalinfo.weight,
+                                          'height': medicalinfo.height,
+                                          'heartrate': medicalinfo.heartrate,
+                                          'respiratory rate':
+                                              medicalinfo.respiratoryrate
+                                        }, medicalinfo.medinfoId);
                                       }
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ViewMedicalRecords()));
                                     },
                                     child: Center(
                                       child: Text(
-                                        'ADD medical records',
+                                        'Edit medical record',
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,

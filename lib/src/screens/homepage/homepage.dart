@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medicine_reminder/src/models/medicine.dart';
 import 'package:medicine_reminder/src/provider/editpage.dart';
+import 'package:medicine_reminder/src/screens/settings_page.dart';
+import 'package:medicine_reminder/src/screens/user/viewmedicalrec.dart';
 //import 'package:medicine_reminder/src/ui/index/index.dart';
 import 'package:medicine_reminder/src/widgets/popupmenu.dart';
 import 'package:medicine_reminder/src/models/medicine.dart';
@@ -14,6 +17,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:medicine_reminder/src/models/medicine_type.dart';
 import 'package:medicine_reminder/src/screens/new_entry/editReminder.dart';
 import 'package:medicine_reminder/main.dart';
+import 'package:medicine_reminder/src/models/user.dart';
+import 'package:medicine_reminder/src/models/currentUser.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,10 +26,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  void initState() {
-    super.initState();
-  }
-
   TextEditingController medinamecontroller = TextEditingController();
 
   TextEditingController medtypeController = TextEditingController();
@@ -75,6 +76,17 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
+              leading: Icon(Icons.report),
+              title: Text('view medical records'),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ViewMedicalRecords(),
+                    ));
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.medical_services_outlined),
               title: Text('add medical record'),
               onTap: () {
@@ -86,11 +98,27 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('settings'),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SettingsPage(),
+                    ));
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.logout),
               title: Text('LogOut'),
               onTap: () {
-                // Update the state of the app.
-                // ...
+                CurrentUser _currentUser = CurrentUser();
+                _currentUser.SignOut();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MyHomePage(),
+                    ));
               },
             ),
           ],
@@ -189,8 +217,15 @@ class TopContainer extends StatelessWidget {
 }
 
 @override
-class BottomContainer extends StatelessWidget {
-  final _store = Store();
+class BottomContainer extends StatefulWidget {
+  @override
+  _BottomContainerState createState() => _BottomContainerState();
+}
+
+class _BottomContainerState extends State<BottomContainer> {
+// class BottomContainer extends StatelessWidget {
+  Store _store = new Store();
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -201,13 +236,16 @@ class BottomContainer extends StatelessWidget {
                 List<Medicines> medicines = [];
                 for (var doc in snapshot.data.documents) {
                   var data = doc.data;
-                  medicines.add(Medicines(
-                      rId: doc.documentID,
-                      medicineName: data['MedicineName'],
-                      dosage: data['dosage'],
-                      medicineType: data['medicineType'],
-                      interval: data['interval'],
-                      startTime: data['StartTime']));
+                  print(_store.getUserid);
+
+                  if (data['uid'] == _store.userid)
+                    medicines.add(Medicines(
+                        rId: doc.documentID,
+                        medicineName: data['MedicineName'],
+                        dosage: data['dosage'],
+                        medicineType: data['medicineType'],
+                        interval: data['interval'],
+                        startTime: data['StartTime']));
                 }
                 return ListView.builder(
                     itemBuilder: (context, index) => Padding(
@@ -301,185 +339,3 @@ class BottomContainer extends StatelessWidget {
 //     },
 //   ));
 // }
-
-class MedicineCard extends StatelessWidget {
-  final Medicines medicine;
-
-  MedicineCard(this.medicine);
-
-  Hero makeIcon(double size) {
-    if (medicine.medicineType == "Bottle") {
-      return Hero(
-        tag: medicine.medicineName + medicine.medicineType,
-        child: Image(image: AssetImage('assets/images/bottle 1.png')),
-      );
-    } else if (medicine.medicineType == "Pill") {
-      return Hero(
-        tag: medicine.medicineName + medicine.medicineType,
-        child: Image(image: AssetImage('assets/images/pill photo.png')),
-      );
-    } else if (medicine.medicineType == "Syringe") {
-      return Hero(
-        tag: medicine.medicineName + medicine.medicineType,
-        child: Image(image: AssetImage('assets/images/syringe.jpg')),
-      );
-    } else if (medicine.medicineType == "Tablet") {
-      return Hero(
-        tag: medicine.medicineName + medicine.medicineType,
-        child: Image(image: AssetImage('assets/images/tablets.png')),
-      );
-    }
-    return Hero(
-      tag: medicine.medicineName + medicine.medicineType,
-      child: Icon(
-        Icons.error,
-        color: Color(0xFF3EB16F),
-        size: size,
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(10.0),
-      child: InkWell(
-        highlightColor: Colors.white,
-        splashColor: Colors.grey,
-        onTap: () {
-          Navigator.of(context).push(
-            PageRouteBuilder<Null>(
-              pageBuilder: (BuildContext context, Animation<double> animation,
-                  Animation<double> secondaryAnimation) {
-                return AnimatedBuilder(
-                    animation: animation,
-                    builder: (BuildContext context, Widget child) {
-                      return Opacity(
-                        opacity: animation.value,
-                      );
-                    });
-              },
-              transitionDuration: Duration(milliseconds: 500),
-            ),
-          );
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                makeIcon(50.0),
-                Hero(
-                  tag: medicine.medicineName,
-                  child: Material(
-                    color: Colors.transparent,
-                    child: Text(
-                      medicine.medicineName,
-                      style: TextStyle(
-                          fontSize: 22,
-                          color: Color(0xFF3EB16F),
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                ),
-                Text(
-                  medicine.interval == 1
-                      ? "Every " + medicine.interval.toString() + " hour"
-                      : "Every " + medicine.interval.toString() + " hours",
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFFC9C9C9),
-                      fontWeight: FontWeight.w400),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-// return GridView.builder(
-//   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//     crossAxisCount: 2,
-//     childAspectRatio: .8,
-//   ),
-//   itemBuilder: (context, index) => Padding(
-//     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-//     child: GestureDetector(
-//       onTapUp: (details) async {
-//         double dx = details.globalPosition.dx;
-//         double dy = details.globalPosition.dy;
-//         double dx2 = MediaQuery.of(context).size.width - dx;
-//         double dy2 = MediaQuery.of(context).size.width - dy;
-//         await showMenu(
-//             context: context,
-//             position: RelativeRect.fromLTRB(dx, dy, dx2, dy2),
-//             items: [
-//               MyPopupMenuItem(
-//                 onClick: () {
-//                   // Navigator.pushNamed(context, '/Editreminder',
-//                   // arguments: medicines[index]);
-//                   //                      Provider.of<CartItem>(context, listen: false)
-//                   // .editreminder(medicines);
-
-//                   Navigator.pushNamed(context, '/Editreminder',
-//                       arguments: medicines[index]);
-//                 },
-//                 child: Text('Edit'),
-//               ),
-//               MyPopupMenuItem(
-//                 onClick: () {
-//                   _store.deleteProduct(medicines[index].rId);
-//                   Navigator.pop(context);
-//                 },
-//                 child: Text('Delete'),
-//               ),
-//             ]);
-//         // return MedicineCard(medicines[index]);
-//       },
-//       child: Stack(
-//         children: <Widget>[
-//           Positioned.fill(
-//             child: Image(
-//                 fit: BoxFit.scaleDown,
-//                 image:
-//                     AssetImage('assets/images/bottle 1.png')),
-//           ),
-//           Positioned(
-//             bottom: 0,
-//             child: Opacity(
-//               opacity: .6,
-//               child: Container(
-//                 width: MediaQuery.of(context).size.width,
-//                 height: 60,
-//                 color: Colors.white,
-//                 child: Padding(
-//                   padding: EdgeInsets.symmetric(
-//                       horizontal: 10, vertical: 5),
-//                   child: Column(
-//                     crossAxisAlignment:
-//                         CrossAxisAlignment.start,
-//                     children: <Widget>[
-//                       Text(
-//                         medicines[index].medicineName,
-//                         style: TextStyle(
-//                             fontWeight: FontWeight.bold),
-//                       ),
-//                       Text(medicines[index].medicineType)
-//                     ],
-//                   ),
-//                 ),
-//               ),
-//             ),
-//           )
-//         ],
-//       ),
-//     ),
-//   ),
-//   itemCount: medicines.length,
-// );

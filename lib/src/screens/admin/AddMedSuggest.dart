@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:medicine_reminder/src/models/medsuggestion.dart';
+//import 'package:medicine_reminder/src/models/medicine%20copy.dart';
 import 'package:medicine_reminder/src/screens/homepage/adminHomepage.dart';
 import 'package:medicine_reminder/src/screens/homepage/homepage.dart';
+import 'package:medicine_reminder/src/services/store.dart';
 
 class AddMedSuggest extends StatefulWidget {
   @override
@@ -8,12 +11,21 @@ class AddMedSuggest extends StatefulWidget {
 }
 
 class _AddMedSuggestState extends State<AddMedSuggest> {
+  final _store = Store();
   final _formKey = GlobalKey<FormState>();
+
+  String medName = '';
+  String dosage = '';
+  String medDiscribtion = '';
+  String medDosage = '';
+  String medRestriction = '';
+  String medSideEffects = '';
+// String id ,
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        resizeToAvoidBottomPadding: false,
+        //resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(
@@ -47,6 +59,11 @@ class _AddMedSuggestState extends State<AddMedSuggest> {
                                 }
                                 return null;
                               },
+                              onChanged: (val) {
+                                setState(() {
+                                  medName = val;
+                                });
+                              },
                               decoration: InputDecoration(
                                   labelText: 'Medicine Name',
                                   labelStyle: TextStyle(
@@ -65,6 +82,11 @@ class _AddMedSuggestState extends State<AddMedSuggest> {
                                 }
                                 return null;
                               },
+                              onChanged: (val) {
+                                setState(() {
+                                  medDiscribtion = val;
+                                });
+                              },
                               decoration: InputDecoration(
                                   labelText: 'Medicine Description ',
                                   labelStyle: TextStyle(
@@ -74,7 +96,6 @@ class _AddMedSuggestState extends State<AddMedSuggest> {
                                   focusedBorder: UnderlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.purple))),
-                              obscureText: true,
                             ),
                             SizedBox(height: 10.0),
                             TextFormField(
@@ -83,6 +104,11 @@ class _AddMedSuggestState extends State<AddMedSuggest> {
                                   return "Please enter Medicine Dose here";
                                 }
                                 return null;
+                              },
+                              onChanged: (val) {
+                                setState(() {
+                                  medDosage = val;
+                                });
                               },
                               decoration: InputDecoration(
                                   labelText: 'Medicine Dose ',
@@ -102,6 +128,11 @@ class _AddMedSuggestState extends State<AddMedSuggest> {
                                 }
                                 return null;
                               },
+                              onChanged: (val) {
+                                setState(() {
+                                  medRestriction = val;
+                                });
+                              },
                               decoration: InputDecoration(
                                   labelText: 'Medicine Restrictions ',
                                   labelStyle: TextStyle(
@@ -119,6 +150,11 @@ class _AddMedSuggestState extends State<AddMedSuggest> {
                                   return "Please enter Medicine Side effects here";
                                 }
                                 return null;
+                              },
+                              onChanged: (val) {
+                                setState(() {
+                                  medSideEffects = val;
+                                });
                               },
                               decoration: InputDecoration(
                                   labelText: 'Medicine Side effects ',
@@ -141,6 +177,23 @@ class _AddMedSuggestState extends State<AddMedSuggest> {
                                   child: GestureDetector(
                                     onTap: () {
                                       if (_formKey.currentState.validate()) {
+                                        _formKey.currentState.save();
+
+                                        // print(id);
+                                        print(medName);
+                                        print(medDiscribtion);
+                                        print(medDosage);
+                                        print(medRestriction);
+                                        print(medSideEffects);
+
+                                        _store.addMedSuggest(MedSuggetion(
+                                          medName: medName,
+                                          medDiscribtion: medDiscribtion,
+                                          medDosage: medDosage,
+                                          medRestriction: medRestriction,
+                                          medSideEffects: medSideEffects,
+                                        ));
+
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -172,7 +225,26 @@ class _AddMedSuggestState extends State<AddMedSuggest> {
                                     borderRadius: BorderRadius.circular(20.0)),
                                 child: InkWell(
                                   onTap: () {
-                                    Navigator.of(context).pop();
+                                    if (_formKey.currentState.validate()) {
+                                      _formKey.currentState.save();
+
+                                      // print(id);
+                                      print(medName);
+                                      print(medDiscribtion);
+                                      print(medDosage);
+                                      print(medRestriction);
+                                      print(medSideEffects);
+
+                                      _store.addMedSuggest(MedSuggetion(
+                                        medName: medName,
+                                        medDiscribtion: medDiscribtion,
+                                        medDosage: medDosage,
+                                        medRestriction: medRestriction,
+                                        medSideEffects: medSideEffects,
+                                      ));
+
+                                      Navigator.of(context).pop();
+                                    }
                                   },
                                   child: Center(
                                     child: Text('Cancel',

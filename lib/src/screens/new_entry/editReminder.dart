@@ -1,5 +1,8 @@
+//import 'dart:js';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:medicine_reminder/main.dart';
 import 'package:medicine_reminder/src/models/medicine_type.dart';
 import 'package:medicine_reminder/src/models/medicine.dart';
 import 'package:medicine_reminder/src/screens/homepage/homepage.dart';
@@ -169,10 +172,13 @@ class _EditreminderState extends State<Editreminder> {
                           initialValue: medicines.dosage,
                           validator: (value) {
                             if (value.isEmpty) {
-                              return ('please enter new dosage');
-                            } else {
-                              return null;
+                              return "Please enter your medicine dose here";
                             }
+                            int dose = int.tryParse(value);
+                            if (dose == null || dose <= 0) {
+                              return 'Age must be greater then 0';
+                            }
+                            return null;
                           },
 
                           onChanged: (val) {
@@ -364,6 +370,7 @@ class _EditreminderState extends State<Editreminder> {
                                       'StartTime': medicines.startTime
                                     }, medicines.rId);
                                   }
+                                  scheduleNotification();
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -411,3 +418,73 @@ class _EditreminderState extends State<Editreminder> {
         ]));
   }
 }
+
+Future<void> scheduleNotification() async {
+  Medicines medicines;
+  print(medicines.startTime);
+  var hour = int.parse(medicines.startTime);
+  print('ay khara');
+  // var hour = int.parse(medicines.startTime[0] + medicines.startTime[1]);
+  // var ogValue = hour;
+  // var minute = int.parse(medicines.startTime[2] + medicines.startTime[3]);
+
+  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    'repeatDailyAtTime channel id',
+    'repeatDailyAtTime channel name',
+    'repeatDailyAtTime description',
+    importance: Importance.Max,
+    // sound: 'sound',
+    ledColor: Color(0xFF3EB16F),
+    ledOffMs: 1000,
+    ledOnMs: 1000,
+    enableLights: true,
+  );
+  var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+  var platformChannelSpecifics = NotificationDetails(
+      androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+
+  await flutterLocalNotificationsPlugin.showDailyAtTime(
+      int.parse(medicines.rId[0]),
+      'Mediminder: ${medicines.medicineName}',
+      // medicines.medicineType != MedicineType.None.toString()
+      'It is time to take your ${medicines.medicineType.toLowerCase()}, according to schedule'
+          'It is time to take your medicine, according to schedule',
+      Time(hour, 0),
+      platformChannelSpecifics);
+  //hour = ogValue;
+}
+//await flutterLocalNotificationsPlugin.cancelAll();
+
+// void scheduleAlarm() async {
+//   var scheduledNotificationDateTime = DateTime.now().add(Duration(seconds: 10));
+//   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+//     'alarm_notif',
+//     'alarm_notif',
+//     'Channel for Alarm notification',
+//     icon: '@mipmap/launcher_icon',
+//     // sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
+//     largeIcon: DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
+//   );
+//   var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+//       sound: 'a_long_cold_sting.wav',
+//       presentAlert: true,
+//       presentBadge: true,
+//       presentSound: true);
+//   var platformChannelSpecifics = NotificationDetails(
+//       androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+//   await flutterLocalNotificationsPlugin.schedule(
+//       0,
+//       'Office',
+//       'medicines.medicineName',
+//       scheduledNotificationDateTime,
+//       platformChannelSpecifics);
+// }
+//DateTime scheduledNotificationDateTime, Medicines medicines) async {
+
+// var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+//     sound: 'a_long_cold_sting.wav',
+//     presentAlert: true,
+//     presentBadge: true,
+//     presentSound: true);
+// var platformChannelSpecifics = NotificationDetails(
+//     androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);

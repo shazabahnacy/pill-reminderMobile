@@ -1,11 +1,13 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:medicine_reminder/main.dart';
 import 'package:medicine_reminder/src/models/medicine_type.dart';
 import 'package:medicine_reminder/src/models/medicine.dart';
 import 'package:medicine_reminder/src/screens/homepage/homepage.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 import 'package:medicine_reminder/src/services/store.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class Addpillrem extends StatefulWidget {
   @override
@@ -134,7 +136,11 @@ class _AddpillremState extends State<Addpillrem> {
                         TextFormField(
                           validator: (value) {
                             if (value.isEmpty) {
-                              return "Please enter medicine dosage here";
+                              return "Please enter your medicine dose here";
+                            }
+                            int dose = int.tryParse(value);
+                            if (dose == null || dose <= 0) {
+                              return 'Age must be greater then 0';
                             }
                             return null;
                           },
@@ -264,12 +270,11 @@ class _AddpillremState extends State<Addpillrem> {
                           dateMask: 'd MMM, yyyy',
                           initialValue: DateTime.now().toString(),
                           firstDate: DateTime(2000),
-                          lastDate: DateTime(2100),
+                          lastDate: DateTime(2033),
                           icon: Icon(Icons.event),
                           dateLabelText: 'Date',
                           timeLabelText: "Hour",
                           selectableDayPredicate: (date) {
-                            // Disable weekend days to select from the calendar
                             if (date.weekday == 6 || date.weekday == 7) {
                               return false;
                             }
@@ -305,6 +310,8 @@ class _AddpillremState extends State<Addpillrem> {
                                         interval: intervals,
                                         startTime: time));
 
+                                    scheduleAlarm();
+                                    //scheduleNotification();
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -353,3 +360,73 @@ class _AddpillremState extends State<Addpillrem> {
         ]));
   }
 }
+
+// Future<void> scheduleNotification() async {
+//   final medicines = Medicines();
+//   //print(time);
+//   var hour = int.parse(medicines.startTime);
+//   print('ay khara');
+//   // var hour = int.parse(medicines.startTime[0] + medicines.startTime[1]);
+//   // var ogValue = hour;
+//   // var minute = int.parse(medicines.startTime[2] + medicines.startTime[3]);
+//
+//   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+//     'repeatDailyAtTime channel id',
+//     'repeatDailyAtTime channel name',
+//     'repeatDailyAtTime description',
+//     importance: Importance.Max,
+//     // sound: 'sound',
+//     ledColor: Color(0xFF3EB16F),
+//     ledOffMs: 1000,
+//     ledOnMs: 1000,
+//     enableLights: true,
+//   );
+//   var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+//   var platformChannelSpecifics = NotificationDetails(
+//       androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+//
+//   await flutterLocalNotificationsPlugin.showDailyAtTime(
+//       int.parse(medicines.rId[0]),
+//       'Mediminder: ${medicines.medicineName}',
+//       // medicines.medicineType != MedicineType.None.toString()
+//       'It is time to take your ${medicines.medicineType.toLowerCase()}, according to schedule'
+//           'It is time to take your medicine, according to schedule',
+//       Time(hour, 0),
+//       platformChannelSpecifics);
+//   //hour = ogValue;
+// }
+//await flutterLocalNotificationsPlugin.cancelAll();
+
+void scheduleAlarm() async {
+  var scheduledNotificationDateTime = DateTime.now().add(Duration(seconds: 10));
+  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    'alarm_notif',
+    'alarm_notif',
+    'Channel for Alarm notification',
+    icon: '@mipmap/launcher_icon',
+    // sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
+    largeIcon: DrawableResourceAndroidBitmap('@mipmap/launcher_icon'),
+  );
+  var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+      sound: 'a_long_cold_sting.wav',
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true);
+  var platformChannelSpecifics = NotificationDetails(
+      androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+  await flutterLocalNotificationsPlugin.schedule(
+      0,
+      'Pilliminder app',
+      'you have created a new medicine reminder',
+      scheduledNotificationDateTime,
+      platformChannelSpecifics);
+}
+//DateTime scheduledNotificationDateTime, Medicines medicines) async {
+
+// var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+//     sound: 'a_long_cold_sting.wav',
+//     presentAlert: true,
+//     presentBadge: true,
+//     presentSound: true);
+// var platformChannelSpecifics = NotificationDetails(
+//     androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);

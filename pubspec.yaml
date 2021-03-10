@@ -19,21 +19,24 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_auth: ^0.14.0+5
-  cloud_firestore: ^0.12.9+4
+  firebase_auth: ^0.15.2
+  cloud_firestore: ^0.12.11
   firebase_database: ^3.1.3
   icon_picker: "^1.0.0"
   date_time_picker: ^1.1.1
   dropdown_formfield: ^0.1.3
+  day_night_switch: ^0.0.2+1
+  
+  #firebase_messaging: ^5.1.2
   
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   rxdart: ^0.22.0
-  provider: ^4.0.0
-  shared_preferences: 0.5.2
-  flutter_local_notifications:
+  provider: ^3.1.0
+  shared_preferences: ^0.5.2
+  flutter_local_notifications: ^1.4.4+2
   flare_flutter:
     git: 
       url: git://github.com/2d-inc/Flare-Flutter.git
